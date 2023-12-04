@@ -54,14 +54,14 @@ app.use("/services", servicesRouter);
 app.use("/testimonial", testimonialRouter);
 
 app.get("/", (req, res) => {
-  res.send("Welcome to Sufian Mustafa Portfolio (Backend) ");
+  res.send("Welcome to Mern Stack  Portfolio  ");
 });
 
 const port = process.env.PORT || 8000;
 
 mongoose
   .connect(
-    "mongodb://sufi0900:sufi0900@ac-s3hligl-shard-00-00.miah2mi.mongodb.net:27017,ac-s3hligl-shard-00-01.miah2mi.mongodb.net:27017,ac-s3hligl-shard-00-02.miah2mi.mongodb.net:27017/Sufi?ssl=true&replicaSet=atlas-397tbw-shard-0&authSource=admin&retryWrites=true&w=majority"
+    "mongodb://sufi0900:sufi0900@ac-s3hligl-shard-00-00.miah2mi.mongodb.net:27017,ac-s3hligl-shard-00-01.miah2mi.mongodb.net:27017,ac-s3hligl-shard-00-02.miah2mi.mongodb.net:27017/mernstack-vitejs-portfolio?ssl=true&replicaSet=atlas-397tbw-shard-0&authSource=admin&retryWrites=true&w=majority"
   )
   .then(() => {
     app.listen(port, () => console.log(`Server running on port ${port}`));
