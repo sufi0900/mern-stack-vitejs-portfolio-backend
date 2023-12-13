@@ -2,25 +2,24 @@ import mongoose from "mongoose";
 
 const tourSchema = mongoose.Schema({
   title: String,
-  // name: { type: String, required: true },
+
   description: String,
   name: String,
+  tag1: String,
+  tag2: String,
+  tag3: String,
+  tag4: String,
   date: String,
-  creator: String,
-  creator: {
-    type: String,
-    index: true, // Add an index on the creator field
-  },
-  imgurl: String,
-  imgurl1: String,
-  imgurl2: String,
-  imageFile: String,
-  imageFile1: String,
+
   imageFile2: String,
-  imageFile3: String,
+
   createdAt: {
     type: Date,
     default: new Date(),
+  },
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 

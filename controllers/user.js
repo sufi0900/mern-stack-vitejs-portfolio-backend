@@ -45,7 +45,7 @@ export const signin = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
-  const { email, password, firstName, lastName } = req.body;
+  const { email, password, firstName, lastName, image } = req.body;
 
   try {
     // const existingUser = await UserModal.findOne({}); // Check if any user already exists
@@ -58,6 +58,7 @@ export const signup = async (req, res) => {
 
     const result = await UserModal.create({
       email,
+      image,
       password: hashedPassword,
       name: `${firstName} ${lastName}`,
     });
@@ -123,6 +124,29 @@ export const changePassword = async (req, res) => {
     await user.save();
 
     res.status(200).json({ message: "Password changed successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+    console.log(error);
+  }
+};
+export const updateRegistrationInfo = async (req, res) => {
+  const { firstName, lastName, image } = req.body;
+  try {
+    const userId = req.userId;
+    const user = await UserModal.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User doesn't exist" });
+    }
+
+    // Update the user's registration information
+    user.name = `${firstName} ${lastName}`;
+    user.image = `${image}`;
+    await user.save();
+
+    res
+      .status(200)
+      .json({ message: "Registration information updated successfully" });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
     console.log(error);

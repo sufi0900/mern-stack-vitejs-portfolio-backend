@@ -6,12 +6,13 @@ export const createTour = async (req, res) => {
   const tour = req.body;
   const newTour = new TourModal({
     ...tour,
-    creator: req.userId,
+    creator: req.userId, // Assuming req.userId is the user's ID
     createdAt: new Date().toISOString(),
   });
 
   try {
     await newTour.save();
+    await newTour.populate("creator", "name").execPopulate();
 
     // Update the cache with the newly created tour
     const prefix = "tours_";
@@ -29,8 +30,9 @@ export const createTour = async (req, res) => {
 };
 export const getTours = async (req, res) => {
   const { page } = req.query;
+
   try {
-    const limit = 3;
+    const limit = 99;
     const startIndex = (Number(page) - 1) * limit;
 
     // Check if data is present in cache for the specific page
@@ -41,7 +43,12 @@ export const getTours = async (req, res) => {
 
     // Query the database to fetch the Tours for the specific page and get the total count simultaneously
     const [tours, total] = await Promise.all([
-      TourModal.find().limit(limit).skip(startIndex).lean(),
+      TourModal.find()
+        .limit(limit)
+        .skip(startIndex)
+        .populate("creator", "image name") // Pass both fields in a single populate call
+
+        .lean(),
       TourModal.countDocuments({}),
     ]);
 
@@ -132,8 +139,13 @@ export const updateTour = async (req, res) => {
   const { id } = req.params;
   const {
     title,
+    name,
     description,
     date,
+    tag1,
+    tag2,
+    tag3,
+    tag4,
     creator,
     imgurl,
     imgurl1,
@@ -152,7 +164,12 @@ export const updateTour = async (req, res) => {
     const updatedTour = {
       creator,
       title,
+      name,
       date,
+      tag1,
+      tag2,
+      tag3,
+      tag4,
       description,
       imgurl,
       imgurl1,
